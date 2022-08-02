@@ -1,0 +1,143 @@
+basePath: /
+definitions:
+  main.SignInRequest:
+    properties:
+      email:
+        type: string
+      password:
+        type: string
+    type: object
+  main.SignInResponse:
+    properties:
+      token:
+        type: string
+    type: object
+  main.Transaction:
+    properties:
+      id:
+        type: string
+      merchantName:
+        type: string
+    type: object
+  main.TransactionsResponse:
+    properties:
+      transactions:
+        items:
+          $ref: '#/definitions/main.Transaction'
+        type: array
+    type: object
+  main.VirtualCard:
+    properties:
+      displayName:
+        type: string
+      id:
+        type: string
+    type: object
+  main.VirtualCardsResponse:
+    properties:
+      virtualCards:
+        items:
+          $ref: '#/definitions/main.VirtualCard'
+        type: array
+    type: object
+host: localhost:8000
+info:
+  contact:
+    email: sheila.loekito@gmail.com
+    name: API Support
+  description: This is a service that calls Extend API t
+  license:
+    name: Apache 2.0
+    url: http://www.apache.org/licenses/LICENSE-2.0.html
+  termsOfService: http://swagger.io/terms/
+  title: Extend API
+  version: "1.0"
+paths:
+  /signin:
+    post:
+      consumes:
+      - application/json
+      description: Sign in with username and password
+      parameters:
+      - description: SignIn
+        in: body
+        name: order
+        required: true
+        schema:
+          $ref: '#/definitions/main.SignInRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/main.SignInResponse'
+      summary: Sign in
+  /transactions/{id}:
+    get:
+      consumes:
+      - application/json
+      description: Get Transaction Details for a transaction ID
+      parameters:
+      - description: Bearer token
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      - description: Transaction ID
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/main.Transaction'
+      summary: Get transaction details
+  /virtualcards:
+    get:
+      consumes:
+      - application/json
+      description: Get Virtual Cards for the user
+      parameters:
+      - description: Bearer token
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/main.VirtualCardsResponse'
+      summary: Get Virtual Cards for the user
+  /virtualcards/{id}/transactions:
+    get:
+      consumes:
+      - application/json
+      description: Get Transactions for a virtual card
+      parameters:
+      - description: Bearer token
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      - description: Virtual Card ID
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/main.TransactionsResponse'
+      summary: Get Transactions for a virtual card
+swagger: "2.0"
